@@ -39,8 +39,8 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 /* .msg-overlay-list-bubble__content--scrollable {
-  overflow-y: auto !important;
-} */
+	overflow-y: auto !important;
+  } */
 .msg-overlay-list-bubble__content {
   position: relative;
   overflow: hidden;
