@@ -1,119 +1,99 @@
-<aside id="msg-overlay" class="msg-overlay-container">
-  <div tabindex="-1" ng-class="class">
-    <header
-      class="msg-overlay-bubble-header"
-      data-control-name="overlay.minimize_connection_list_bar"
-    >
-      <section
-        class="msg-overlay-bubble-header__details flex-row align-items-center"
-        style="width: 100%"
+<section
+  style="display: flex; flex-direction: column; overflow: hidden !important"
+>
+  <section>
+    <div style="display: flex; justify-content: flex-end; margin-right: 1rem">
+      <button
+        ng-click="mybutton1()"
+        type="button"
+        id="dropdownMenuButton1"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        style="background: none; border: none; height: 1.75rem; width: 1.75rem"
       >
-        <div
-          class="presence-entity presence-entity--size-1"
-          ng-click="changeClass()"
-        >
-          <img
-            title="Prajwal Urs"
-            src="assets/images/pic1.png"
-            alt="Prajwal"
-            class="presence-entity__image EntityPhoto-circle-1 lazy-image ghost-person"
-          />
-          <div
-            class="presence-entity__indicator presence-entity__indicator--size-1 presence-indicator presence-indicator--is-online presence-indicator--size-1"
-          ></div>
-        </div>
-        <button
-          ng-click="changeClass()"
-          class="msg-overlay-bubble-header__button truncate ml2"
-          style="width: 100%; text-align: left"
-        >
-          <h4 class="truncate t-14 t-bold t-black">
-            <span aria-hidden="true">Messaging</span>
-          </h4>
-        </button>
-      </section>
-      <section class="msg-overlay-bubble-header__controls display-flex">
-        <!-- <button
-          class="msg-overlay-bubble-header__control msg-overlay-bubble-header__control--new-convo-btn artdeco-button artdeco-button--circle artdeco-button--muted artdeco-button--1 artdeco-button--tertiary ember-view"
-        >
-          <img src="lib/images/edit.png" alt="edit" />
-        </button> -->
-        <div
-          class="artdeco-dropdown artdeco-dropdown--placement-bottom artdeco-dropdown--justification-right ember-view btn-group dropdown"
-        >
-          <button
-            ng-click="mybutton1()"
-            type="button"
-            id="dropdownMenuButton1"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            class="artdeco-button artdeco-button--1 artdeco-button--circle artdeco-button--tertiary artdeco-button--muted artdeco-dropdown__trigger artdeco-dropdown__trigger--placement-bottom ember-view"
-          >
-            <img src="assets/images/more.png" alt="more" />
-          </button>
-          <ul
-            id="users"
-            class="dropdown-menu"
-            aria-labelledby="dropdownMenuButton1"
-          ></ul>
-        </div>
-        <button
-          ng-click="changeClass()"
-          class="msg-overlay-bubble-header__control msg-overlay-bubble-header__control--new-convo-btn artdeco-button artdeco-button--circle artdeco-button--muted artdeco-button--1 artdeco-button--tertiary ember-view"
-        >
-          <img
-            src="assets/images/arrow-down-sign-to-navigate.png"
-            alt=""
-            ng-show="arrowDown"
-          />
-          <img
-            src="assets/images/up-arrow.png"
-            alt=""
-            ng-class="{'hidden': arrowDown === true}"
-          />
-        </button>
-      </section>
-    </header>
-    <section
-      class="scrollable msg-overlay-list-bubble__content msg-overlay-list-bubble__content--scrollable"
-    >
-      <div class="msg-overlay-list-bubble-default-conversation-container">
-        <div
-          class="msg-conversations-container__conversations-list msg-overlay-list-bubble__conversations-list"
-        >
-          <h2 id="room-name"></h2>
-
-          <div
-            class="msg-conversation-listitem__link msg-overlay-list-bubble__convo-item"
-          >
-            <div class="chat-messages"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section style="width: 100%">
-      <textarea
-        class="txtarea"
-        ng-model="obj.msg"
-        style="
-          resize: none;
-          border-top: 1px solid #000;
-          padding: 1rem 2rem;
-          width: 100%;
-          height: 100px;
-        "
-        placeholder="Write a message..."
-      ></textarea>
-
+        <img
+          src="assets/images/more.png"
+          alt="more"
+          style="height: 1.5rem; width: 1.5rem"
+        />
+      </button>
+      <ul
+        id="users"
+        class="dropdown-menu"
+        aria-labelledby="dropdownMenuButton1"
+      ></ul>
+    </div>
+    <div>
       <div>
-        <button ng-click="chatForm()" style="padding: 1.5rem; width: 100%">
-          Send
-        </button>
-      </div>
-    </section>
-  </div>
-</aside>
+        <h2 id="room-name"></h2>
 
+        <div style="height: calc(100vh - 215px); overflow-y: auto">
+          <div class="chat-messages" s></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="width: 100%; justify-items: flex-end">
+    <textarea
+      class="txtarea"
+      ng-model="obj.msg"
+      style="
+        resize: none;
+        border-top: 1px solid #000;
+        padding: 1rem 2rem;
+        width: 100%;
+        height: 100px;
+      "
+      placeholder="Write a message..."
+    ></textarea>
+
+    <button
+      ng-click="chatForm()"
+      style="padding: 1.5rem; width: 100%; border: none; background: none"
+    >
+      Send
+    </button>
+  </section>
+</section>
+<style scoped>
+  div,
+  section {
+    margin: 0;
+    padding: 0;
+  }
+  .text {
+    color: black !important;
+  }
+
+  .chat-messages {
+    padding: 30px;
+    max-height: 1000px !important;
+    overflow-y: auto;
+  }
+
+  .chat-messages .message {
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: var(--light-color);
+    border-radius: 5px;
+  }
+
+  .chat-messages .message .meta {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--dark-color-b);
+    opacity: 0.7;
+    margin-bottom: 7px;
+  }
+
+  .chat-messages .message .meta span {
+    color: #777;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
 <link rel="stylesheet" href="./style.css" />
 <script src="js/main.js"></script>
