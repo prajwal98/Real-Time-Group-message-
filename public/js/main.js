@@ -50,13 +50,13 @@ app.controller("chatApp", function ($scope) {
         e.preventDefault();
 
         let msg = e.target.elements.msg.value;
-
+        console.log("1st" + msg);
         msg = msg.trim();
 
         if (!msg) {
           return false;
         }
-
+        console.log("2nd" + msg);
         socket.emit("chatMessage", msg);
 
         e.target.elements.msg.value = "";
