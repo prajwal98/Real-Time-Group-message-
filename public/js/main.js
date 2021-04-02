@@ -22,81 +22,82 @@ app.controller("chatApp", function ($scope) {
     } else {
       $scope.class = "msg-overlay-list-bubble--is-minimized m14";
     }
-    $(document).ready(function () {
-      const roomName = $("#room-name");
 
-      const userList = $("#users");
-      const chatMessages = $(".chat-messages");
-      const chatForm = $("#chat-form");
-      const socket = io();
+    const roomName = $("#room-name");
 
-      console.log(username, room);
+    const userList = $("#users");
+    const chatMessages = $(".chat-messages");
+    const chatForm = $("#chat-form");
+    const socket = io();
 
-      socket.emit("joinRoom", { username, room });
+    console.log(username, room);
 
-      socket.on("roomUsers", ({ room, users }) => {
-        outputRoomName(room);
-        outputUsers(users);
-      });
+    socket.emit("joinRoom", { username, room });
 
-      socket.on("message", (message) => {
-        console.log(message);
-        outputMessage(message);
+    socket.on("roomUsers", ({ room, users }) => {
+      $scope.outputRoomName(room);
+      $scope.outputUsers(users);
+    });
 
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      });
+    socket.on("message", (message) => {
+      console.log(message);
+      $scope.outputMessage(message);
 
-      chatForm.on("submit", (e) => {
-        e.preventDefault();
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+    $scope.obj = {};
+    $scope.chatForm = function () {
+      let msg = $scope.obj.msg;
+      socket.emit("chatMessage", msg);
+    };
+    // chatForm.on("submit", (e) => {
+    //   let msg = e.target.elements.msg.value;
+    //   console.log("1st" + msg);
+    //   msg = msg.trim();
 
-        let msg = e.target.elements.msg.value;
-        console.log("1st" + msg);
-        msg = msg.trim();
+    //   if (!msg) {
+    //     return false;
+    //   }
+    //   console.log("2nd" + msg);
+    //   socket.emit("chatMessage", msg);
 
-        if (!msg) {
-          return false;
-        }
-        console.log("2nd" + msg);
-        socket.emit("chatMessage", msg);
+    //   e.target.elements.msg.value = "";
+    //   e.target.elements.msg.focus();
+    // });
 
-        e.target.elements.msg.value = "";
-        e.target.elements.msg.focus();
-      });
-
-      function outputMessage(message) {
-        $(".chat-messages").append(`<div class='message'>
+    $scope.outputMessage = function (message) {
+      $(".chat-messages").append(`<div class='message'>
         
         <p class='meta'>${message.username} <span>${message.time}</span></p>
         <p class='text'>${message.text}</p>
         </div>`);
-        // const div = document.createElement("div");
-        // div.classList.add("message");
-        // const p = document.createElement("p");
-        // p.classList.add("meta");
-        // p.innerText = message.username;
-        // p.innerHTML += `<span>${message.time}</span>`;
-        // div.append(p);
-        // const para = document.createElement("p");
-        // para.classList.add("text");
-        // para.innerText = message.text;
-        // div.appendChild(para);
-        // $(".chat-messages").append(div);
-      }
+      // const div = document.createElement("div");
+      // div.classList.add("message");
+      // const p = document.createElement("p");
+      // p.classList.add("meta");
+      // p.innerText = message.username;
+      // p.innerHTML += `<span>${message.time}</span>`;
+      // div.append(p);
+      // const para = document.createElement("p");
+      // para.classList.add("text");
+      // para.innerText = message.text;
+      // div.appendChild(para);
+      // $(".chat-messages").append(div);
+    };
 
-      function outputRoomName(room) {
-        roomName.innerText = room;
-      }
+    $scope.outputRoomName = function (room) {
+      roomName.innerText = room;
+    };
 
-      function outputUsers(users) {
-        userList.innerHTML = "";
-        users.forEach((user) => {
-          userList.append(`<li>${user.username}</li>`);
-          //   const li = document.createElement("li");
-          //   li.innerText = user.username;
-          //   userList.appendChild(li);
-        });
-      }
-    });
+    $scope.outputUsers = function (users) {
+      userList.innerHTML = "";
+      users.forEach((user) => {
+        userList.append(`<li>${user.username}</li>`);
+        //   const li = document.createElement("li");
+        //   li.innerText = user.username;
+        //   userList.appendChild(li);
+      });
+    };
   };
   $scope.changeClass();
 });

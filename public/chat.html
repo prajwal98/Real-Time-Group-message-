@@ -5,7 +5,8 @@
       data-control-name="overlay.minimize_connection_list_bar"
     >
       <section
-        class="msg-overlay-bubble-header__details flex-row align-items-center" style="width: 100%;"
+        class="msg-overlay-bubble-header__details flex-row align-items-center"
+        style="width: 100%"
       >
         <div
           class="presence-entity presence-entity--size-1"
@@ -26,7 +27,7 @@
           class="msg-overlay-bubble-header__button truncate ml2"
           style="width: 100%; text-align: left"
         >
-          <h4  class="truncate t-14 t-bold t-black">
+          <h4 class="truncate t-14 t-bold t-black">
             <span aria-hidden="true">Messaging</span>
           </h4>
         </button>
@@ -42,14 +43,19 @@
         >
           <button
             ng-click="mybutton1()"
-            type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
             class="artdeco-button artdeco-button--1 artdeco-button--circle artdeco-button--tertiary artdeco-button--muted artdeco-dropdown__trigger artdeco-dropdown__trigger--placement-bottom ember-view"
           >
             <img src="assets/images/more.png" alt="more" />
           </button>
-          <ul id="users" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-           
-          </ul>
+          <ul
+            id="users"
+            class="dropdown-menu"
+            aria-labelledby="dropdownMenuButton1"
+          ></ul>
         </div>
         <button
           ng-click="changeClass()"
@@ -76,34 +82,38 @@
           class="msg-conversations-container__conversations-list msg-overlay-list-bubble__conversations-list"
         >
           <h2 id="room-name"></h2>
-        
+
           <div
             class="msg-conversation-listitem__link msg-overlay-list-bubble__convo-item"
           >
-          <div class="chat-messages"></div>
-           
+            <div class="chat-messages"></div>
           </div>
         </div>
       </div>
     </section>
 
-   <section style="width: 100%;">
-   <form id="chat-form">
-    <textarea
-    id="msg"
-    class="txtarea"
-    
-    style="resize: none; border-top: 1px solid #000; padding: 1rem 2rem;width: 100%;height: 100px;"
-    placeholder="Write a message..."
-  ></textarea>
-  <div>
-    <button style="padding: 1.5rem;width: 100%;">Send</button>
+    <section style="width: 100%">
+      <textarea
+        class="txtarea"
+        ng-model="obj.msg"
+        style="
+          resize: none;
+          border-top: 1px solid #000;
+          padding: 1rem 2rem;
+          width: 100%;
+          height: 100px;
+        "
+        placeholder="Write a message..."
+      ></textarea>
+
+      <div>
+        <button ng-click="chatForm()" style="padding: 1.5rem; width: 100%">
+          Send
+        </button>
+      </div>
+    </section>
   </div>
-</div>
-   </form>
-   </section>
 </aside>
 
-    <link rel="stylesheet" href="./style.css">
-    <script src="js/main.js"></script>
-
+<link rel="stylesheet" href="./style.css" />
+<script src="js/main.js"></script>
