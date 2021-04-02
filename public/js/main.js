@@ -49,6 +49,7 @@ app.controller("chatApp", function ($scope) {
     $scope.chatForm = function () {
       let msg = $scope.obj.msg;
       socket.emit("chatMessage", msg);
+      $scope.obj.msg = "";
     };
     // chatForm.on("submit", (e) => {
     //   let msg = e.target.elements.msg.value;
