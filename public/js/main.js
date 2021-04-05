@@ -25,11 +25,9 @@ app.controller("chatApp", function ($scope) {
 
     const roomName = $("#room-name");
 
-    const userList = $("#users");
     const chatMessages = $(".chat-messages");
-    const chatForm = $("#chat-form");
     const socket = io();
-
+    console.log(chatMessages);
     console.log(username, room);
 
     socket.emit("joinRoom", { username, room });
@@ -91,12 +89,10 @@ app.controller("chatApp", function ($scope) {
     };
 
     $scope.outputUsers = function (users) {
-      console.log(users);
-      users.forEach((user) => {
-        userList.append(`<li>Prajwel</li>`);
-        //   const li = document.createElement("li");
-        //   li.innerText = user.username;
-        //   userList.appendChild(li);
+      users.map((user) => {
+        $(".dropdown-menu").append(
+          `<li><a class="dropdown-item" href="#">${user.username}</a></li>`
+        );
       });
     };
   };
