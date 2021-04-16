@@ -22,33 +22,39 @@
       <div>
         <h2 id="room-name"></h2>
 
-        <div style="height: calc(100vh - 215px); overflow-y: auto">
-          <div class="chat-messages" s></div>
-        </div>
+        <div
+          style="height: calc(100vh - 215px); overflow-y: auto"
+          class="chat-messages"
+          id="scroll-top"
+        ></div>
       </div>
     </div>
   </section>
 
   <section style="width: 100%; justify-items: flex-end">
-    <textarea
-      class="txtarea"
-      ng-model="obj.msg"
-      style="
-        resize: none;
-        border-top: 1px solid #000;
-        padding: 1rem 2rem;
-        width: 100%;
-        height: 100px;
-      "
-      placeholder="Write a message..."
-    ></textarea>
+    <form ng-submit="chatForm()">
+      <input
+        type="text"
+        class="txtarea"
+        id="text-msg"
+        ng-model="obj.msg"
+        style="
+          resize: none;
+          border-top: 1px solid #000;
+          padding: 1rem 2rem;
+          width: 100%;
+          height: 100px;
+        "
+        placeholder="Write a message..."
+        required
+      />
 
-    <button
-      ng-click="chatForm()"
-      style="padding: 1.5rem; width: 100%; border: none; background: none"
-    >
-      Send
-    </button>
+      <button
+        style="padding: 1.5rem; width: 100%; border: none; background: none"
+      >
+        Send
+      </button>
+    </form>
   </section>
 </section>
 <style scoped>

@@ -1,13 +1,13 @@
-const app = angular.module("chat-app", ["ngRoute"]);
+const app = angular.module('chat-app', ['ngRoute']);
 
 app.config(function ($routeProvider) {
-  $routeProvider.when("/", {
-    templateUrl: "../chat.html",
-    controller: "chatApp",
+  $routeProvider.when('/', {
+    templateUrl: '../chat.html',
+    controller: 'chatApp',
   });
 });
-app.controller("chatApp", function ($scope) {
-  $scope.class = "msg-overlay-list-bubble--is-minimized m14";
+app.controller('chatApp', function ($scope, $window) {
+  $scope.class = 'msg-overlay-list-bubble--is-minimized m14';
   $scope.arrowDown = false;
 
   $scope.changeClass = function () {
@@ -17,37 +17,47 @@ app.controller("chatApp", function ($scope) {
 
     $scope.arrowDown = false;
     $scope.arrowDown = !$scope.arrowDown;
-    if ($scope.class === "msg-overlay-list-bubble--is-minimized m14") {
-      $scope.class = "msg-overlay-list-bubble m14";
+    if ($scope.class === 'msg-overlay-list-bubble--is-minimized m14') {
+      $scope.class = 'msg-overlay-list-bubble m14';
     } else {
-      $scope.class = "msg-overlay-list-bubble--is-minimized m14";
+      $scope.class = 'msg-overlay-list-bubble--is-minimized m14';
     }
 
-    const roomName = $("#room-name");
+    const roomName = $('#room-name');
 
-    const chatMessages = $(".chat-messages");
     const socket = io();
-    console.log(chatMessages);
+
     console.log(username, room);
 
-    socket.emit("joinRoom", { username, room });
+    socket.emit('joinRoom', { username, room });
 
-    socket.on("roomUsers", ({ room, users }) => {
+    socket.on('roomUsers', ({ room, users }) => {
       $scope.outputRoomName(room);
       $scope.outputUsers(users);
     });
 
-    socket.on("message", (message) => {
+    socket.on('message', message => {
       console.log(message);
       $scope.outputMessage(message);
-
+      // Scroll down
+      let chatMessages = document.getElementById('scroll-top');
       chatMessages.scrollTop = chatMessages.scrollHeight;
     });
     $scope.obj = {};
     $scope.chatForm = function () {
       let msg = $scope.obj.msg;
-      socket.emit("chatMessage", msg);
-      $scope.obj.msg = "";
+      $scope.obj.msg = '';
+      let textMsg = document.getElementById('text-msg');
+      textMsg.focus();
+      console.log('1st' + msg);
+      msg = msg.trim();
+
+      if (!msg) {
+        return false;
+      }
+      console.log('2nd' + msg);
+      socket.emit('chatMessage', msg);
+      // msg.focus();
     };
     // chatForm.on("submit", (e) => {
     //   let msg = e.target.elements.msg.value;
@@ -65,7 +75,7 @@ app.controller("chatApp", function ($scope) {
     // });
 
     $scope.outputMessage = function (message) {
-      $(".chat-messages").append(`<div class='message'>
+      $('.chat-messages').append(`<div class='message'>
         
         <p class='meta'>${message.username} <span>${message.time}</span></p>
         <p class='text'>${message.text}</p>
@@ -89,9 +99,9 @@ app.controller("chatApp", function ($scope) {
     };
 
     $scope.outputUsers = function (users) {
-      users.map((user) => {
-        $(".dropdown-menu").append(
-          `<li><a class="dropdown-item" href="#">${user.username}</a></li>`
+      users.map(user => {
+        $('.dropdown-menu').append(
+          `<li><p class='decor'>${user.username}</p></li>`
         );
       });
     };
