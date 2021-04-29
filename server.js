@@ -35,20 +35,6 @@ app.use('/chats', chatRouter);
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Amplify.configure({
-//   // OPTIONAL - if your API requires authentication
-//   Auth: {
-//     // REQUIRED - Amazon Cognito Identity Pool ID
-//     identityPoolId: 'us-east-1:71ec0e53-a9fe-44a7-ab65-23027a0408ad',
-//     // REQUIRED - Amazon Cognito Region
-//     region: 'us-east-1',
-//     // OPTIONAL - Amazon Cognito User Pool ID
-//     userPoolId: 'us-east-1_gQYyDz2sa',
-//     // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-//     userPoolWebClientId: '2pelocmsrs9rbeblevjla4c473',
-//   },
-// });
-
 const botName = 'LiveTime Bot';
 const Room = require('./model/roomSchema');
 
@@ -104,21 +90,7 @@ io.on('connection', socket => {
 
     socket.join(user.room);
 
-    // axios
-    //   .get('https://randomuser.me/api/')
-    //   .then(function (response) {
-    //     // handle success
-    //     console.log(response.data);
-    //   })
-    //   .catch(function (error) {
-    //     // handle error
-    //     console.log(error);
-    //   })
-    //   .then(function () {
-    //     // always executed
-    //   });
-    // // console.log('res' + response);
-    // // // Welcome current user
+    // Welcome current user
     socket.emit('message', formatMessage(botName, 'Welcome to livetime!'));
     client++;
 
@@ -193,22 +165,6 @@ io.on('connection', socket => {
       });
     }
   });
-  // notify users upon disconnection
-  // socket.on('disconnect', async () => {
-  //   const matchingSockets = await io.in(socket.room).allSockets();
-  //   console.log(matchingSockets);
-  //   const isDisconnected = matchingSockets.size === 0;
-  //   if (isDisconnected) {
-  //     // notify other users
-  //     socket.broadcast.emit('user disconnected', socket.userID);
-  //     // update the connection status of the session
-  //     sessionStore.saveSession(socket.sessionID, {
-  //       userID: socket.userID,
-  //       username: socket.username,
-  //       connected: false,
-  //     });
-  //   }
-  // });
 });
 
 const PORT = process.env.PORT || 80 || 443 || 3000;
