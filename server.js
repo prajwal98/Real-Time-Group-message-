@@ -70,7 +70,6 @@ io.on('connection', socket => {
     userID: socket.userID,
   });
 
-  fetchCategories();
   //Join Room
   socket.on('joinRoom', ({ username, room }) => {
     // persist session
