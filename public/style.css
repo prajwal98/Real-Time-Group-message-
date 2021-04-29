@@ -34,4 +34,21 @@
 .decor {
   text-align: center;
   padding: 0.7rem;
+  display: inline-block;
+}
+.online {
+  width: 8px;
+  height: 8px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 3rem;
+}
+.offline {
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 3rem;
 }
