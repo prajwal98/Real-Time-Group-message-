@@ -5,11 +5,9 @@ const express = require('express');
 const socketio = require('socket.io');
 const bodyParser = require('body-parser');
 const chatRouter = require('./routes/chatroute');
-const { API } = require('aws-amplify');
-const axios = require('axios');
+
 const crypto = require('crypto');
 
-const Amplify = require('aws-amplify');
 const randomId = () => crypto.randomBytes(8).toString('hex');
 
 const formatMessage = require('./utils/messages');
@@ -19,7 +17,6 @@ const {
   getCurrentUser,
   userLeave,
   getRoomUsers,
-  fetchCategories,
 } = require('./utils/users');
 
 const { InMemorySessionStore } = require('./sessionStore');
