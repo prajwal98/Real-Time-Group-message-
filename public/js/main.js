@@ -11,7 +11,7 @@ app.controller('chatApp', function ($scope, $window) {
   $scope.arrowDown = false;
 
   $scope.changeClass = function () {
-    const { username, room } = Qs.parse(location.search, {
+    const { username, room, id } = Qs.parse(location.search, {
       ignoreQueryPrefix: true,
     });
 
@@ -29,6 +29,7 @@ app.controller('chatApp', function ($scope, $window) {
       auth: {
         username,
         room,
+        id,
       },
     });
 

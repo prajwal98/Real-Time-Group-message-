@@ -50,11 +50,12 @@ io.use((socket, next) => {
   }
   const username = socket.handshake.auth.username;
   const room = socket.handshake.auth.room;
+  const uniqueUID = socket.handshake.auth.id;
   console.log(username);
   if (!username) {
     return next(new Error('invalid username'));
   }
-  socket.sessionID = randomId();
+  socket.sessionID = uniqueUID;
   socket.userID = randomId();
   socket.room = room;
   next();
