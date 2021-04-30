@@ -42,7 +42,7 @@
   background-color: green;
   border-radius: 50%;
   display: inline-block;
-  margin-left: 3rem;
+  margin-left: 2rem;
 }
 .offline {
   width: 8px;
@@ -50,7 +50,7 @@
   background-color: red;
   border-radius: 50%;
   display: inline-block;
-  margin-left: 3rem;
+  margin-left: 2rem;
 }
 
 .dropdown-menu {
