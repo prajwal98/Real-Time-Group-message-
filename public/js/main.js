@@ -82,6 +82,9 @@ app.controller('chatApp', function ($scope, $window) {
     });
     socket.on('roomUsers', ({ room, users }) => {
       $scope.outputRoomName(room);
+
+      console.log(users);
+      // $scope.outputUsers(users);
     });
 
     socket.on('message', message => {
@@ -148,37 +151,103 @@ app.controller('chatApp', function ($scope, $window) {
       roomName.innerText = room;
     };
     let usersList = [];
-    socket.on('connected user', users => {
-      // $scope.outputUsers(users);
-      users.forEach(user => {
-        console.log(user);
-        const bool = usersList.find(userL => userL.userID === user.userID);
-        if (!bool) {
-          usersList.push(user);
+
+    socket.on('connect', () => {
+      usersList.forEach(user => {
+        if (user.self) {
+          user.connected = true;
+        }
+        $scope.$apply();
+      });
+    });
+
+    socket.on('disconnect', () => {
+      usersList.forEach(user => {
+        if (user.self) {
+          user.connected = false;
         }
       });
+      $scope.$apply();
+    });
+    socket.on('users', users => {
+      // $scope.outputUsers(users);
+      // users.forEach(user => {
+      //   console.log(user);
+      //   const bool = usersList.find(userL => userL.userID === user.userID);
+      //   if (!bool) {
+      //     usersList.push(user);
+      //   }
+      // });
+      // $scope.outputUsers(usersList);
+
+      users.forEach(user => {
+        for (let i = 0; i < usersList.length; i++) {
+          const existingUser = usersList[i];
+          if (existingUser.userID === user.userID) {
+            existingUser.connected = user.connected;
+            return;
+          }
+        }
+        console.log(socket.userID);
+        user.self = user.userID === socket.userID;
+        usersList.push(user);
+        $scope.outputUsers(usersList);
+        // console.log(usersList);
+        $scope.$apply();
+      });
+
+      $scope.$apply();
+    });
+
+    socket.on('user connected', user => {
+      // console.log(user);
+
+      for (let i = 0; i < usersList.length; i++) {
+        const existingUsers = usersList[i];
+        if (existingUsers.userID === user.userID) {
+          existingUsers.connected = true;
+          return;
+        }
+      }
+      // console.log(user);
+      usersList.push(user);
+      console.log(usersList);
       $scope.outputUsers(usersList);
+      $scope.$apply();
     });
 
     socket.on('user disconnected', id => {
-      for (let i = 0; i < $scope.users.length; i++) {
-        const user = $scope.users[i];
+      for (let i = 0; i < usersList.length; i++) {
+        const user = usersList[i];
         if (user.userID === id) {
           user.connected = false;
           break;
         }
       }
+      // usersList.push(user);
+      $scope.outputUsers(usersList);
       $scope.$apply();
     });
     $scope.outputUsers = function (usersList) {
-      usersList.map(user => {
-        $('.dropdown-menu').append(
-          user.connected === true
-            ? `<li><span class="online"></span></span><p class='decor'>${user.username}</p></li>`
-            : `<li><span class="offline"></span></span><p class='decor'>${user.username}</p></li>`
-        );
-        $scope.$apply();
+      usersList.forEach(user => {
+        if (user.room === room || user.userID === socket.userID) {
+          $('.dropdown-menu').append(
+            user.connected
+              ? `<li><span class="online"></span><p class='decor'>${user.username}</p></li>`
+              : `<li><span class="offline"></span><p class='decor'>${user.username}</p></li>`
+          );
+          $scope.$apply();
+        }
       });
+      // usersList.map(user => {
+      //   $('.dropdown-menu').append(
+      //     `<li><span class="online"></span></span><p class='decor'>${user.username}</p></li>`
+      //     // user.connected === true
+      //     //   ? `<li><span class="online"></span></span><p class='decor'>${user.username}</p></li>`
+      //     //   : `<li><span class="offline"></span></span><p class='decor'>${user.username}</p></li>`
+      //   );
+      //   $scope.$apply();
+      // });
     };
   };
 
