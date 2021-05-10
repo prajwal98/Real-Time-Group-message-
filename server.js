@@ -167,7 +167,9 @@ io.on('connection', socket => {
     const usersArr = [];
     userIds.forEach(res => {
       if (res.uniqueUID !== socket.sessionID) {
-        usersArr.push(res.uniqueUID);
+        if (!usersArr.includes(res.uniqueUID)) {
+          usersArr.push(res.uniqueUID);
+        }
       }
     });
     console.log(usersArr);

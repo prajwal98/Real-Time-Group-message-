@@ -33,7 +33,7 @@ app.controller('chatApp', function ($scope, $window) {
       },
     });
 
-    // const sessionID = localStorage.getItem('sessionId');
+    // const sessionID = localStorage.getItem('sessionID');
 
     // if (sessionID) {
     //   socket.auth = { sessionID };
@@ -43,7 +43,7 @@ app.controller('chatApp', function ($scope, $window) {
     socket.on('session', ({ sessionID, userID }) => {
       socket.auth = { sessionID };
 
-      // localStorage.setItem('sessionId', sessionID);
+      // localStorage.setItem('sessionID', sessionID);
 
       socket.userID = userID;
     });
