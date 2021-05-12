@@ -42,7 +42,6 @@
   background-color: green;
   border-radius: 50%;
   display: inline-block;
-  margin-left: 2rem;
 }
 .offline {
   width: 8px;
@@ -50,7 +49,6 @@
   background-color: red;
   border-radius: 50%;
   display: inline-block;
-  margin-left: 2rem;
 }
 .users {
   width: 8px;
@@ -58,10 +56,24 @@
   background-color: black;
   border-radius: 50%;
   display: inline-block;
-  margin-left: 2rem;
 }
 
 .dropdown-menu {
   height: 200px !important;
   overflow-y: auto !important;
+  width: 200px;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  font-size: 17.5px;
+  text-align: center;
+}
+.paraG {
+  margin: 0 !important;
+  padding-left: 1rem !important;
+  padding-bottom: 0.5rem;
 }

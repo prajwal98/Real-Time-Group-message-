@@ -217,11 +217,19 @@ var chatAppCtrl = function ($scope, $crypto) {
       usersList.forEach(user => {
         if (user.UNAME !== undefined) {
           $('.dropdown-menu').append(
-            `<li><span class="users"></span><p class='decor'>${user.UNAME}</p></li>`
+            `<li>
+            <div class='flex'>
+            <span class="users"></span><p class='paraG'>${user.UNAME}</p>
+            </div>
+            </li>`
           );
         } else {
           $('.dropdown-menu').append(
-            `<li><span class="users"></span><p class='decor'>${user.username}</p></li>`
+            `<li>
+            <div class='flex'>
+            <span class="users"></span><p class='paraG'>${user.username}</p>
+            </div>
+            </li>`
           );
         }
         $scope.$apply();
