@@ -6,12 +6,13 @@ app.config(function ($routeProvider) {
     controller: 'chatApp',
   });
 });
-app.controller('chatApp', function ($scope, $window) {
+
+var chatAppCtrl = function ($scope, $crypto) {
   $scope.class = 'msg-overlay-list-bubble--is-minimized m14';
   $scope.arrowDown = false;
 
   $scope.changeClass = function () {
-    const { username, room, id } = Qs.parse(location.search, {
+    const { username, room, id, chatparam } = Qs.parse(location.search, {
       ignoreQueryPrefix: true,
     });
 
@@ -24,7 +25,8 @@ app.controller('chatApp', function ($scope, $window) {
     }
 
     const roomName = $('#room-name');
-    console.log(username);
+    console.log(chatparam);
+    // $crypto.decrypt(chatparam, akjcguayb976qsdn1q92y83ehqd23dsa);
     const socket = io({
       auth: {
         username,
@@ -50,7 +52,7 @@ app.controller('chatApp', function ($scope, $window) {
 
     console.log(username, room);
 
-    socket.emit('joinRoom', { username, room });
+    socket.emit('joinRoom', { username, room, chatparam });
     $(document).ready(function () {
       fetch('/chats')
         .then(data => {
@@ -108,7 +110,7 @@ app.controller('chatApp', function ($scope, $window) {
       }
       console.log('2nd' + msg);
 
-      socket.emit('chatMessage', msg);
+      socket.emit('chatMessage', { msg, chatparam });
       $scope.obj.msg = '';
       // msg.focus();
     };
@@ -179,24 +181,25 @@ app.controller('chatApp', function ($scope, $window) {
       //   }
       // });
       // $scope.outputUsers(usersList);
+      $scope.outputUsers(users);
 
-      users.forEach(user => {
-        for (let i = 0; i < usersList.length; i++) {
-          const existingUser = usersList[i];
-          if (existingUser.userID === user.userID) {
-            existingUser.connected = user.connected;
-            return;
-          }
-        }
-        console.log(socket.userID);
-        user.self = user.userID === socket.userID;
-        usersList.push(user);
-        $scope.outputUsers(usersList);
-        // console.log(usersList);
-        $scope.$apply();
-      });
+      // users.forEach(user => {
+      //   for (let i = 0; i < usersList.length; i++) {
+      //     const existingUser = usersList[i];
+      //     if (existingUser.userID === user.userID) {
+      //       existingUser.connected = user.connected;
+      //       return;
+      //     }
+      //   }
+      //   console.log(socket.userID);
+      //   user.self = user.userID === socket.userID;
+      //   usersList.push(user);
+      //   $scope.outputUsers(usersList);
+      //   // console.log(usersList);
+      //   $scope.$apply();
+      // });
 
-      $scope.$apply();
+      // $scope.$apply();
     });
 
     socket.on('user connected', user => {
@@ -230,29 +233,31 @@ app.controller('chatApp', function ($scope, $window) {
     });
     $scope.outputUsers = function (usersList) {
       usersList.forEach(user => {
-        if (user.room === room || user.userID === socket.userID) {
+        if (user.UNAME !== undefined) {
           $('.dropdown-menu').append(
-            user.connected
-              ? `<li><span class="online"></span><p class='decor'>${user.username}</p></li>`
-              : `<li><span class="offline"></span><p class='decor'>${user.username}</p></li>`
+            `<li><span class="users"></span><p class='decor'>${user.UNAME}</p></li>`
           );
-          $scope.$apply();
         }
+        $scope.$apply();
       });
-      // usersList.map(user => {
-      //   $('.dropdown-menu').append(
-      //     `<li><span class="online"></span></span><p class='decor'>${user.username}</p></li>`
-      //     // user.connected === true
-      //     //   ? `<li><span class="online"></span></span><p class='decor'>${user.username}</p></li>`
-      //     //   : `<li><span class="offline"></span></span><p class='decor'>${user.username}</p></li>`
-      //   );
-      //   $scope.$apply();
-      // });
     };
+    // $scope.outputUsers = function (usersList) {
+    //   usersList.forEach(user => {
+    //     if (user.room === room || user.userID === socket.userID) {
+    //       $('.dropdown-menu').append(
+    //         user.connected
+    //           ? `<li><span class="online"></span><p class='decor'>${user.username}</p></li>`
+    //           : `<li><span class="offline"></span><p class='decor'>${user.username}</p></li>`
+    //       );
+    //       $scope.$apply();
+    //     }
+    //   });
+    // };
   };
 
   $scope.changeClass();
-});
+};
+app.controller('chatApp', chatAppCtrl);
 
 // (function () {
 //   fetch('/chats')
@@ -269,3 +274,5 @@ app.controller('chatApp', function ($scope, $window) {
 //       });
 //     });
 // })();
+
+chatAppCtrl.$inject = ['$scope'];

@@ -6,6 +6,7 @@ const socketio = require('socket.io');
 const request = require('request');
 const bodyParser = require('body-parser');
 const chatRouter = require('./routes/chatroute');
+const CryptoJS = require('crypto-js');
 
 const crypto = require('crypto');
 
@@ -66,7 +67,6 @@ io.use((socket, next) => {
   next();
 });
 
-let client = 0;
 // Run when client connects
 io.on('connection', socket => {
   //session details
@@ -77,7 +77,7 @@ io.on('connection', socket => {
   });
 
   //Join Room
-  socket.on('joinRoom', ({ username, room }) => {
+  socket.on('joinRoom', ({ username, room, chatparam }) => {
     // persist session
     sessionStore.saveSession(socket.sessionID, {
       userID: socket.userID,
@@ -86,6 +86,39 @@ io.on('connection', socket => {
       connected: true,
     });
 
+    let chat = chatparam.replace(/\s/g, '+');
+
+    var bytes = CryptoJS.AES.decrypt(
+      chat,
+      '1234567890qwertyuiopasdfghjklzxcvbnm'
+    );
+
+    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    console.log(decryptedData);
+
+    var options = {
+      method: 'POST',
+      url: 'https://qvymg02fy7.execute-api.us-east-1.amazonaws.com/CB-PRODAUTH1296/getGroupUserList',
+      headers: {
+        'cache-control': 'no-cache',
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+      body: {
+        oid: 'CASEBOX',
+        tenant: 'CASEBOX-EXCELSOFT',
+        clid: decryptedData.clid,
+        gid: decryptedData.gid,
+        cid: decryptedData.cid,
+      },
+      json: true,
+    };
+    request(options, function (error, response, body) {
+      if (error) throw new Error(error);
+      body.users.forEach(user => {});
+      console.log(body);
+      socket.emit('users', body.users);
+    });
     // fetch existing users
     const users = [];
 
@@ -97,7 +130,7 @@ io.on('connection', socket => {
         connected: session.connected,
       });
     });
-    socket.emit('users', users);
+    // socket.emit('users', users);
     console.log(users);
 
     // console.log(users);
@@ -144,65 +177,107 @@ io.on('connection', socket => {
     const user = sessionStore.findSession(socket.sessionID);
     // console.log(msg);
 
-    NotificationStore.saveNotifications({
-      room: socket.room,
-      uniqueUID: socket.sessionID,
-      msg: msg,
-    });
-    const notifications = NotificationStore.notifications.filter(
-      notify => notify.room === socket.room
+    // NotificationStore.saveNotifications({
+    //   room: socket.room,
+    //   uniqueUID: socket.sessionID,
+    //   msg: msg,
+    // });
+    // const notifications = NotificationStore.notifications.filter(
+    //   notify => notify.room === socket.room
+    // );
+
+    // function groupByKey(array, key) {
+    //   return array.reduce((hash, obj) => {
+    //     if (obj[key] === undefined) return hash;
+    //     return Object.assign(hash, {
+    //       [obj[key]]: (hash[obj[key]] || []).concat(obj),
+    //     });
+    //   }, {});
+    // }
+    // const results = groupByKey(notifications, 'room');
+    // // console.log(results);
+    // var userIds = results[socket.room];
+    // const usersArr = [];
+    // userIds.forEach(res => {
+    //   if (res.uniqueUID !== socket.sessionID) {
+    //     if (!usersArr.includes(res.uniqueUID)) {
+    //       usersArr.push(res.uniqueUID);
+    //     }
+    //   }
+    // });
+    // // console.log(usersArr);
+    // console.log(notify);
+
+    let chat = msg.chatparam.replace(/\s/g, '+');
+
+    var bytes = CryptoJS.AES.decrypt(
+      chat,
+      '1234567890qwertyuiopasdfghjklzxcvbnm'
     );
 
-    function groupByKey(array, key) {
-      return array.reduce((hash, obj) => {
-        if (obj[key] === undefined) return hash;
-        return Object.assign(hash, {
-          [obj[key]]: (hash[obj[key]] || []).concat(obj),
-        });
-      }, {});
-    }
-    const results = groupByKey(notifications, 'room');
-    // console.log(results);
-    var userIds = results[socket.room];
-    const usersArr = [];
-    userIds.forEach(res => {
-      if (res.uniqueUID !== socket.sessionID) {
-        if (!usersArr.includes(res.uniqueUID)) {
-          usersArr.push(res.uniqueUID);
-        }
-      }
-    });
-    console.log(usersArr);
-    console.log(notify);
+    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    console.log(decryptedData);
+
     var options = {
       method: 'POST',
-      url:
-        'https://qvymg02fy7.execute-api.us-east-1.amazonaws.com/CB-PRODAUTH1296/sendPushNotification',
+      url: 'https://qvymg02fy7.execute-api.us-east-1.amazonaws.com/CB-PRODAUTH1296/getGroupUserList',
       headers: {
         'cache-control': 'no-cache',
         'content-type': 'application/json',
         accept: 'application/json',
       },
       body: {
-        users: usersArr,
-        msg: msg,
-        title: socket.room,
         oid: 'CASEBOX',
-        read: 0,
         tenant: 'CASEBOX-EXCELSOFT',
-        type: 1,
+        clid: decryptedData.clid,
+        gid: decryptedData.gid,
+        cid: decryptedData.cid,
       },
       json: true,
     };
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
-      console.log(body);
+      const usersArray = [];
+      body.users.forEach(user => {
+        if (user.EID !== socket.sessionID) {
+          if (!usersArray.includes(user.EID)) {
+            usersArray.push(user.EID);
+          }
+        }
+      });
+
+      console.log(usersArray);
+
+      var options = {
+        method: 'POST',
+        url: 'https://qvymg02fy7.execute-api.us-east-1.amazonaws.com/CB-PRODAUTH1296/sendPushNotification',
+        headers: {
+          'cache-control': 'no-cache',
+          'content-type': 'application/json',
+          accept: 'application/json',
+        },
+        body: {
+          users: usersArray,
+          msg: msg.msg,
+          title: socket.room,
+          oid: 'CASEBOX',
+          read: 0,
+          tenant: 'CASEBOX-EXCELSOFT',
+          type: 1,
+        },
+        json: true,
+      };
+      request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+        console.log(body);
+      });
     });
-    io.to(user.room).emit('message', formatMessage(user.username, msg));
+
+    io.to(user.room).emit('message', formatMessage(user.username, msg.msg));
 
     // console.log(user);
     let chatMessage = new Room({
-      message: msg,
+      message: msg.msg,
       username: user.username,
       room: user.room,
       time: moment().utcOffset('+05:30').format('LT'),
@@ -232,6 +307,7 @@ io.on('connection', socket => {
       //   users: getRoomUsers(user.room),
       // });
       socket.broadcast.emit('user disconnected', socket.userID);
+
       sessionStore.saveSession(socket.sessionID, {
         userID: socket.userID,
         username: user.username,

@@ -52,6 +52,14 @@
   display: inline-block;
   margin-left: 2rem;
 }
+.users {
+  width: 8px;
+  height: 8px;
+  background-color: black;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 2rem;
+}
 
 .dropdown-menu {
   height: 200px !important;

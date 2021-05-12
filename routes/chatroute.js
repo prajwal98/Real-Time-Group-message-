@@ -11,9 +11,11 @@ router.route('/').get((req, res, next) => {
 
   connectdb.then(db => {
     let data = Rooms.find({ message: 'Javascript' });
-    Rooms.find({}).then(room => {
-      res.send(room);
-    });
+    setTimeout(() => {
+      Rooms.find({}).then(room => {
+        res.send(room);
+      });
+    }, 2000);
   });
 });
 
