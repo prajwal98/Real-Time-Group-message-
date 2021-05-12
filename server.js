@@ -113,12 +113,14 @@ io.on('connection', socket => {
       },
       json: true,
     };
-    request(options, function (error, response, body) {
-      if (error) throw new Error(error);
-      body.users.forEach(user => {});
-      console.log(body);
-      socket.emit('users', body.users);
-    });
+    if (decryptedData.gname !== 'Individual') {
+      request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+
+        console.log(body);
+        socket.emit('users', body.users);
+      });
+    }
     // fetch existing users
     const users = [];
 
@@ -130,7 +132,7 @@ io.on('connection', socket => {
         connected: session.connected,
       });
     });
-    // socket.emit('users', users);
+    socket.emit('users', users);
     console.log(users);
 
     // console.log(users);
@@ -218,60 +220,64 @@ io.on('connection', socket => {
     var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
     console.log(decryptedData);
 
-    var options = {
-      method: 'POST',
-      url: 'https://qvymg02fy7.execute-api.us-east-1.amazonaws.com/CB-PRODAUTH1296/getGroupUserList',
-      headers: {
-        'cache-control': 'no-cache',
-        'content-type': 'application/json',
-        accept: 'application/json',
-      },
-      body: {
-        oid: 'CASEBOX',
-        tenant: 'CASEBOX-EXCELSOFT',
-        clid: decryptedData.clid,
-        gid: decryptedData.gid,
-        cid: decryptedData.cid,
-      },
-      json: true,
-    };
-    request(options, function (error, response, body) {
-      if (error) throw new Error(error);
-      const usersArray = [];
-      body.users.forEach(user => {
-        if (user.EID !== socket.sessionID) {
-          if (!usersArray.includes(user.EID)) {
-            usersArray.push(user.EID);
-          }
-        }
-      });
-
-      console.log(usersArray);
-
+    if (decryptedData.gname !== 'Individual') {
       var options = {
         method: 'POST',
-        url: 'https://qvymg02fy7.execute-api.us-east-1.amazonaws.com/CB-PRODAUTH1296/sendPushNotification',
+        url: 'https://qvymg02fy7.execute-api.us-east-1.amazonaws.com/CB-PRODAUTH1296/getGroupUserList',
         headers: {
           'cache-control': 'no-cache',
           'content-type': 'application/json',
           accept: 'application/json',
         },
         body: {
-          users: usersArray,
-          msg: msg.msg,
-          title: socket.room,
           oid: 'CASEBOX',
-          read: 0,
           tenant: 'CASEBOX-EXCELSOFT',
-          type: 1,
+          clid: decryptedData.clid,
+          gid: decryptedData.gid,
+          cid: decryptedData.cid,
         },
         json: true,
       };
       request(options, function (error, response, body) {
         if (error) throw new Error(error);
-        console.log(body);
+        const usersArray = [];
+        if (body.users !== null) {
+          body.users.forEach(user => {
+            if (user.EID !== socket.sessionID) {
+              if (!usersArray.includes(user.EID)) {
+                usersArray.push(user.EID);
+              }
+            }
+          });
+        }
+
+        console.log(usersArray);
+
+        var options = {
+          method: 'POST',
+          url: 'https://qvymg02fy7.execute-api.us-east-1.amazonaws.com/CB-PRODAUTH1296/sendPushNotification',
+          headers: {
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
+            accept: 'application/json',
+          },
+          body: {
+            users: usersArray,
+            msg: msg.msg,
+            title: decryptedData.room,
+            oid: 'CASEBOX',
+            read: 0,
+            tenant: 'CASEBOX-EXCELSOFT',
+            type: 1,
+          },
+          json: true,
+        };
+        request(options, function (error, response, body) {
+          if (error) throw new Error(error);
+          console.log(body);
+        });
       });
-    });
+    }
 
     io.to(user.room).emit('message', formatMessage(user.username, msg.msg));
 

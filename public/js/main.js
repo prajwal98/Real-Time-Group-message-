@@ -182,24 +182,6 @@ var chatAppCtrl = function ($scope, $crypto) {
       // });
       // $scope.outputUsers(usersList);
       $scope.outputUsers(users);
-
-      // users.forEach(user => {
-      //   for (let i = 0; i < usersList.length; i++) {
-      //     const existingUser = usersList[i];
-      //     if (existingUser.userID === user.userID) {
-      //       existingUser.connected = user.connected;
-      //       return;
-      //     }
-      //   }
-      //   console.log(socket.userID);
-      //   user.self = user.userID === socket.userID;
-      //   usersList.push(user);
-      //   $scope.outputUsers(usersList);
-      //   // console.log(usersList);
-      //   $scope.$apply();
-      // });
-
-      // $scope.$apply();
     });
 
     socket.on('user connected', user => {
@@ -236,6 +218,10 @@ var chatAppCtrl = function ($scope, $crypto) {
         if (user.UNAME !== undefined) {
           $('.dropdown-menu').append(
             `<li><span class="users"></span><p class='decor'>${user.UNAME}</p></li>`
+          );
+        } else {
+          $('.dropdown-menu').append(
+            `<li><span class="users"></span><p class='decor'>${user.username}</p></li>`
           );
         }
         $scope.$apply();
