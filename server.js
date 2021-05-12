@@ -120,20 +120,21 @@ io.on('connection', socket => {
         console.log(body);
         socket.emit('users', body.users);
       });
+    } else {
+      const users = [];
+
+      sessionStore.findAllSessions().forEach(session => {
+        users.push({
+          userID: session.userID,
+          username: session.username,
+          room: session.room,
+          connected: session.connected,
+        });
+      });
+      socket.emit('users', users);
+      console.log(users);
     }
     // fetch existing users
-    const users = [];
-
-    sessionStore.findAllSessions().forEach(session => {
-      users.push({
-        userID: session.userID,
-        username: session.username,
-        room: session.room,
-        connected: session.connected,
-      });
-    });
-    socket.emit('users', users);
-    console.log(users);
 
     // console.log(users);
     // const user = userJoin(socket.id, username, room, true);
