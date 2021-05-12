@@ -315,12 +315,12 @@ io.on('connection', socket => {
       // });
       socket.broadcast.emit('user disconnected', socket.userID);
 
-      sessionStore.saveSession(socket.sessionID, {
-        userID: socket.userID,
-        username: user.username,
-        room: socket.room,
-        connected: false,
-      });
+      // sessionStore.saveSession(socket.sessionID, {
+      //   userID: socket.userID,
+      //   username: user.username,
+      //   room: socket.room,
+      //   connected: false,
+      // });
     }
   });
 });
@@ -330,5 +330,5 @@ const PORT = process.env.PORT || 80 || 443 || 3000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // nohup node server.js &s
-// ps -a","ps -ef |grep nohup
+// ps -ef |grep "node"
 // kill
