@@ -1,5 +1,6 @@
 const request = require('request');
 function fetchNotification(usersArray, msg, room) {
+  console.log(room);
   var options = {
     method: 'POST',
     url: 'https://qvymg02fy7.execute-api.us-east-1.amazonaws.com/CB-PRODAUTH1296/sendPushNotification',

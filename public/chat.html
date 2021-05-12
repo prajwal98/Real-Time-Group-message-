@@ -32,7 +32,7 @@
   </section>
 
   <section style="width: 100%; justify-items: flex-end">
-    <form ng-submit="chatForm()">
+    <form ng-submit="chatForm()" autocomplete="off">
       <input
         type="text"
         class="txtarea"
@@ -46,6 +46,7 @@
           height: 100px;
         "
         placeholder="Write a message..."
+        autocomplete="off"
         required
       />
 

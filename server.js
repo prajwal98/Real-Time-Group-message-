@@ -152,12 +152,12 @@ io.on('connection', socket => {
     socket.emit('message', formatMessage(botName, 'Welcome to livetime!'));
 
     // Broadcast when a user connects
-    socket.broadcast
-      .to(user.room)
-      .emit(
-        'message',
-        formatMessage(botName, `${user.username} has joined the chat`)
-      );
+    // socket.broadcast
+    //   .to(user.room)
+    //   .emit(
+    //     'message',
+    //     formatMessage(botName, `${user.username} has joined the chat`)
+    //   );
 
     // notify existing users
     socket.broadcast.emit('user connected', {
@@ -244,6 +244,8 @@ io.on('connection', socket => {
         json: true,
       };
 
+      console.log(msg);
+
       request(options, function (error, response, body) {
         if (error) throw new Error(error);
         let usersArray = [];
@@ -300,10 +302,10 @@ io.on('connection', socket => {
     // console.log(disUser);
 
     if (isDisconnected) {
-      // io.to(user.room).emit(
-      //   'message',
-      //   formatMessage(botName, `${user.username} has left the chat`)
-      // );
+      io.to(user.room).emit(
+        'message',
+        formatMessage(botName, `${user.username} has left the chat`)
+      );
 
       // // Send users and room info
       // io.to(user.room).emit('roomUsers', {
