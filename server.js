@@ -14,6 +14,8 @@ const randomId = () => crypto.randomBytes(8).toString('hex');
 
 const formatMessage = require('./utils/messages');
 
+const fetchNotification = require('./api');
+
 const {
   userJoin,
   getCurrentUser,
@@ -239,9 +241,10 @@ io.on('connection', socket => {
         },
         json: true,
       };
+
       request(options, function (error, response, body) {
         if (error) throw new Error(error);
-        const usersArray = [];
+        let usersArray = [];
         if (body.users !== null) {
           body.users.forEach(user => {
             if (user.EID !== socket.sessionID) {
@@ -250,34 +253,26 @@ io.on('connection', socket => {
               }
             }
           });
+          if (decryptedData.teid !== undefined) {
+            usersArray.push(decryptedData.teid);
+          }
+          fetchNotification(usersArray, msg.msg, decryptedData.room);
         }
 
         console.log(usersArray);
-
-        var options = {
-          method: 'POST',
-          url: 'https://qvymg02fy7.execute-api.us-east-1.amazonaws.com/CB-PRODAUTH1296/sendPushNotification',
-          headers: {
-            'cache-control': 'no-cache',
-            'content-type': 'application/json',
-            accept: 'application/json',
-          },
-          body: {
-            users: usersArray,
-            msg: msg.msg,
-            title: decryptedData.room,
-            oid: 'CASEBOX',
-            read: 0,
-            tenant: 'CASEBOX-EXCELSOFT',
-            type: 1,
-          },
-          json: true,
-        };
-        request(options, function (error, response, body) {
-          if (error) throw new Error(error);
-          console.log(body);
-        });
       });
+    } else if (decryptedData.type === 'student') {
+      let usersArray = [];
+      if (decryptedData.teid !== undefined) {
+        usersArray.push(decryptedData.teid);
+      }
+      fetchNotification(usersArray, msg.msg, decryptedData.room);
+    } else if (decryptedData.type === 'Teacher') {
+      let usersArray = [];
+      if (decryptedData.room !== undefined) {
+        usersArray.push(decryptedData.room);
+      }
+      fetchNotification(usersArray, msg.msg, decryptedData.room);
     }
 
     io.to(user.room).emit('message', formatMessage(user.username, msg.msg));
