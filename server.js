@@ -118,9 +118,11 @@ io.on('connection', socket => {
     if (decryptedData.gname !== 'Individual') {
       request(options, function (error, response, body) {
         if (error) throw new Error(error);
-
-        console.log(body);
-        socket.emit('users', body.users);
+        if (body) {
+          socket.emit('users', body.users);
+        } else {
+          console.log(`UsersList is ${body}`);
+        }
       });
     } else {
       const users = [];

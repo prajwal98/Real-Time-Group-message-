@@ -79,8 +79,11 @@ var chatAppCtrl = function ($scope, $crypto) {
         <p class='text'>${data.message}</p>
         </div>`);
           });
+          $('#scroll-top').animate(
+            { scrollTop: $('#scroll-top')[0].scrollHeight },
+            1000
+          );
         });
-      $('scroll-top').scrollTop = $('scroll-top').scrollHeight;
     });
     socket.on('roomUsers', ({ room, users }) => {
       $scope.outputRoomName(room);
@@ -220,14 +223,6 @@ var chatAppCtrl = function ($scope, $crypto) {
             `<li>
             <div class='flex'>
             <span class="users"></span><p class='paraG'>${user.UNAME}</p>
-            </div>
-            </li>`
-          );
-        } else {
-          $('.dropdown-menu').append(
-            `<li>
-            <div class='flex'>
-            <span class="users"></span><p class='paraG'>${user.username}</p>
             </div>
             </li>`
           );
