@@ -226,6 +226,14 @@ var chatAppCtrl = function ($scope, $crypto) {
             </div>
             </li>`
           );
+        } else if (user.username) {
+          $('.dropdown-menu').append(
+            `<li>
+            <div class='flex'>
+            <span class="users"></span><p class='paraG'>${user.username}</p>
+            </div>
+            </li>`
+          );
         }
         $scope.$apply();
       });

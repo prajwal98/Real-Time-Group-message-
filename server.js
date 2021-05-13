@@ -135,8 +135,8 @@ io.on('connection', socket => {
           room: session.room,
           connected: session.connected,
         });
+        socket.emit('users', users);
       });
-      socket.emit('users', users);
       console.log(users);
     }
     // fetch existing users
