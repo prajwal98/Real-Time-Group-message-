@@ -153,12 +153,12 @@ io.on('connection', socket => {
     socket.emit('message', formatMessage(botName, 'Welcome to livetime!'));
 
     // Broadcast when a user connects
-    // socket.broadcast
-    //   .to(user.room)
-    //   .emit(
-    //     'message',
-    //     formatMessage(botName, `${user.username} has joined the chat`)
-    //   );
+    socket.broadcast
+      .to(user.room)
+      .emit(
+        'message',
+        formatMessage(botName, `${user.username} has joined the chat`)
+      );
 
     // notify existing users
     socket.broadcast.emit('user connected', {
