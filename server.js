@@ -41,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const botName = 'LiveTime Bot';
 const Room = require('./model/roomSchema');
 const { notify } = require('./routes/chatroute');
+const { catch } = require('./dbconnect');
 
 //session auth
 io.use((socket, next) => {
@@ -249,6 +250,7 @@ io.on('connection', socket => {
 
       request(options, function (error, response, body) {
         if (error) throw new Error(error);
+      
         let usersArray = [];
         if (body.users !== null) {
           body.users.forEach(user => {
@@ -261,7 +263,7 @@ io.on('connection', socket => {
           if (decryptedData.teid !== undefined) {
             usersArray.push(decryptedData.teid);
           }
-          fetchNotification(usersArray, msg.msg, decryptedData.gname);
+          fetchNotification(usersArray, msg.msg, decryptedData.gname, decryptedData.tenant);
         }
 
         console.log(usersArray);
@@ -273,14 +275,14 @@ io.on('connection', socket => {
         usersArray.push(decryptedData.teid);
         console.log('student' + usersArray);
       }
-      fetchNotification(usersArray, msg.msg, decryptedData.gname);
+      fetchNotification(usersArray, msg.msg, decryptedData.gname,decryptedData.tenant);
     } else if (decryptedData.type === 'Teacher') {
       let usersArray = [];
       if (decryptedData.room !== undefined) {
         usersArray.push(decryptedData.room);
         console.log('Teacher' + usersArray);
       }
-      fetchNotification(usersArray, msg.msg, decryptedData.gname);
+      fetchNotification(usersArray, msg.msg, decryptedData.gname,decryptedData.tenant);
     }
 
     io.to(user.room).emit('message', formatMessage(user.username, msg.msg));

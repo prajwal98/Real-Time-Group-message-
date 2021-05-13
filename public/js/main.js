@@ -104,7 +104,7 @@ var chatAppCtrl = function ($scope, $crypto) {
       let msg = $scope.obj.msg;
 
       let textMsg = document.getElementById('text-msg');
-      textMsg.focus();
+
       console.log('1st' + msg);
       msg = msg.trim();
 
@@ -115,41 +115,15 @@ var chatAppCtrl = function ($scope, $crypto) {
 
       socket.emit('chatMessage', { msg, chatparam });
       $scope.obj.msg = '';
+      textMsg.focus();
       // msg.focus();
     };
-    // chatForm.on("submit", (e) => {
-    //   let msg = e.target.elements.msg.value;
-    //   console.log("1st" + msg);
-    //   msg = msg.trim();
-
-    //   if (!msg) {
-    //     return false;
-    //   }
-    //   console.log("2nd" + msg);
-    //   socket.emit("chatMessage", msg);
-
-    //   e.target.elements.msg.value = "";
-    //   e.target.elements.msg.focus();
-    // });
 
     $scope.outputMessage = function (message) {
       $('.chat-messages').append(`<div class='message'>
-        
         <p class='meta'>${message.username} <span>${message.time}</span></p>
         <p class='text'>${message.text}</p>
         </div>`);
-      // const div = document.createElement("div");
-      // div.classList.add("message");
-      // const p = document.createElement("p");
-      // p.classList.add("meta");
-      // p.innerText = message.username;
-      // p.innerHTML += `<span>${message.time}</span>`;
-      // div.append(p);
-      // const para = document.createElement("p");
-      // para.classList.add("text");
-      // para.innerText = message.text;
-      // div.appendChild(para);
-      // $(".chat-messages").append(div);
     };
 
     $scope.outputRoomName = function (room) {
@@ -238,38 +212,10 @@ var chatAppCtrl = function ($scope, $crypto) {
         $scope.$apply();
       });
     };
-    // $scope.outputUsers = function (usersList) {
-    //   usersList.forEach(user => {
-    //     if (user.room === room || user.userID === socket.userID) {
-    //       $('.dropdown-menu').append(
-    //         user.connected
-    //           ? `<li><span class="online"></span><p class='decor'>${user.username}</p></li>`
-    //           : `<li><span class="offline"></span><p class='decor'>${user.username}</p></li>`
-    //       );
-    //       $scope.$apply();
-    //     }
-    //   });
-    // };
   };
 
   $scope.changeClass();
 };
 app.controller('chatApp', chatAppCtrl);
-
-// (function () {
-//   fetch('/chats')
-//     .then(data => {
-//       return data.json();
-//     })
-//     .then(json => {
-//       json.map(data => {
-//         console.log(
-//           $('.chat-messages').append(`
-//         <div>hi</div>
-//         `)
-//         );
-//       });
-//     });
-// })();
 
 chatAppCtrl.$inject = ['$scope'];

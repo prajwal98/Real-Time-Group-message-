@@ -1,5 +1,5 @@
 const request = require('request');
-function fetchNotification(usersArray, msg, room) {
+function fetchNotification(usersArray, msg, room, tenant) {
   console.log(room);
   var options = {
     method: 'POST',
@@ -15,7 +15,7 @@ function fetchNotification(usersArray, msg, room) {
       title: room,
       oid: 'CASEBOX',
       read: 0,
-      tenant: 'CASEBOX-EXCELSOFT',
+      tenant: tenant,
       type: 1,
     },
     json: true,
