@@ -119,6 +119,7 @@ io.on('connection', socket => {
       request(options, function (error, response, body) {
         if (error) throw new Error(error);
         if (body) {
+          console.log(body.users);
           socket.emit('users', body.users);
         } else {
           console.log(`UsersList is ${body}`);
@@ -260,7 +261,7 @@ io.on('connection', socket => {
           if (decryptedData.teid !== undefined) {
             usersArray.push(decryptedData.teid);
           }
-          fetchNotification(usersArray, msg.msg, decryptedData.room);
+          fetchNotification(usersArray, msg.msg, decryptedData.gname);
         }
 
         console.log(usersArray);
@@ -270,13 +271,13 @@ io.on('connection', socket => {
       if (decryptedData.teid !== undefined) {
         usersArray.push(decryptedData.teid);
       }
-      fetchNotification(usersArray, msg.msg, decryptedData.room);
+      fetchNotification(usersArray, msg.msg, decryptedData.gname);
     } else if (decryptedData.type === 'Teacher') {
       let usersArray = [];
       if (decryptedData.room !== undefined) {
         usersArray.push(decryptedData.room);
       }
-      fetchNotification(usersArray, msg.msg, decryptedData.room);
+      fetchNotification(usersArray, msg.msg, decryptedData.gname);
     }
 
     io.to(user.room).emit('message', formatMessage(user.username, msg.msg));
