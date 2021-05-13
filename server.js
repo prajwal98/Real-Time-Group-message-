@@ -270,12 +270,14 @@ io.on('connection', socket => {
       let usersArray = [];
       if (decryptedData.room !== undefined) {
         usersArray.push(decryptedData.room);
+        console.log('student' + usersArray);
       }
       fetchNotification(usersArray, msg.msg, decryptedData.gname);
     } else if (decryptedData.type === 'Teacher') {
       let usersArray = [];
       if (decryptedData.room !== undefined) {
         usersArray.push(decryptedData.room);
+        console.log('Teacher' + usersArray);
       }
       fetchNotification(usersArray, msg.msg, decryptedData.gname);
     }
