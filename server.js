@@ -268,8 +268,8 @@ io.on('connection', socket => {
       });
     } else if (decryptedData.type === 'student') {
       let usersArray = [];
-      if (decryptedData.teid !== undefined) {
-        usersArray.push(decryptedData.teid);
+      if (decryptedData.room !== undefined) {
+        usersArray.push(decryptedData.room);
       }
       fetchNotification(usersArray, msg.msg, decryptedData.gname);
     } else if (decryptedData.type === 'Teacher') {
