@@ -268,8 +268,9 @@ io.on('connection', socket => {
       });
     } else if (decryptedData.type === 'student') {
       let usersArray = [];
-      if (decryptedData.room !== undefined) {
-        usersArray.push(decryptedData.room);
+      console.log(decryptedData.teid);
+      if (decryptedData.teid !== undefined) {
+        usersArray.push(decryptedData.teid);
         console.log('student' + usersArray);
       }
       fetchNotification(usersArray, msg.msg, decryptedData.gname);
