@@ -136,13 +136,9 @@ io.on('connection', socket => {
       //     connected: session.connected,
       //   });
       // });
-      decryptedData.userlist.forEach(user => {
-        user.EID = socket.sessionID;
-        user.username = username;
-        users.push(user);
-      });
-      socket.emit('users', users);
-      console.log(users);
+
+      socket.emit('users', decryptedData.userlist);
+      console.log(decryptedData.userlist);
     }
     // fetch existing users
 

@@ -192,7 +192,7 @@ var chatAppCtrl = function ($scope, $crypto) {
     });
     $scope.outputUsers = function (usersList) {
       usersList.forEach(user => {
-        if (user.UNAME !== undefined) {
+        if (user.UNAME !== undefined && user.UNAME) {
           $('.dropdown-menu').append(
             `<li>
             <div class='flex'>
