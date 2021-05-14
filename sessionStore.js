@@ -17,14 +17,9 @@ class InMemorySessionStore extends SessionStore {
 
   saveSession(id, session) {
     this.sessions.set(id, session);
+    console.log(this.sessions);
   }
 
-  // Get room users
-  getRoomUsers(room) {
-    return this.sessions.forEach(session => {
-      console.log(session);
-    });
-  }
   findAllSessions() {
     return [...this.sessions.values()];
   }

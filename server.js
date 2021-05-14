@@ -128,15 +128,20 @@ io.on('connection', socket => {
     } else {
       const users = [];
 
-      sessionStore.findAllSessions().forEach(session => {
-        users.push({
-          userID: session.userID,
-          username: session.username,
-          room: session.room,
-          connected: session.connected,
-        });
-        socket.emit('users', users);
+      // sessionStore.findAllSessions().forEach(session => {
+      //   users.push({
+      //     userID: session.userID,
+      //     username: session.username,
+      //     room: session.room,
+      //     connected: session.connected,
+      //   });
+      // });
+      decryptedData.userlist.forEach(user => {
+        user.EID = socket.sessionID;
+        user.username = username;
+        users.push(user);
       });
+      socket.emit('users', users);
       console.log(users);
     }
     // fetch existing users
