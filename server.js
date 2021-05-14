@@ -263,7 +263,10 @@ io.on('connection', socket => {
               }
             }
           });
-          if (decryptedData.teid !== undefined) {
+          if (
+            decryptedData.teid !== undefined &&
+            decryptedData.type === 'Teacher'
+          ) {
             usersArray.push(decryptedData.teid);
           }
           fetchNotification(
