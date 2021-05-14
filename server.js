@@ -297,6 +297,7 @@ io.on('connection', socket => {
       );
     }
 
+    console.log(user);
     io.to(user.room).emit('message', formatMessage(user.username, msg.msg));
 
     // console.log(user);
