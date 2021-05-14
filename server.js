@@ -265,7 +265,7 @@ io.on('connection', socket => {
           });
           if (
             decryptedData.teid !== undefined &&
-            decryptedData.type === 'Teacher'
+            decryptedData.type === 'student'
           ) {
             usersArray.push(decryptedData.teid);
           }
