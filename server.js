@@ -268,7 +268,7 @@ io.on('connection', socket => {
           fetchNotification(
             usersArray,
             msg.msg,
-            decryptedData.gname,
+            user.username,
             decryptedData.tenant
           );
         }
@@ -284,7 +284,7 @@ io.on('connection', socket => {
       fetchNotification(
         usersArray,
         msg.msg,
-        decryptedData.gname,
+        user.username,
         decryptedData.tenant
       );
     } else if (decryptedData.type === 'Teacher') {
@@ -296,7 +296,7 @@ io.on('connection', socket => {
       fetchNotification(
         usersArray,
         msg.msg,
-        decryptedData.gname,
+        user.username,
         decryptedData.tenant
       );
     }
