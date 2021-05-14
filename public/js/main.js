@@ -158,7 +158,10 @@ var chatAppCtrl = function ($scope, $crypto) {
       //   }
       // });
       // $scope.outputUsers(usersList);
-      $scope.outputUsers(users);
+      // console.log(users);
+      $scope.users = users;
+      // $scope.outputUsers(users);
+      $scope.$apply();
     });
 
     socket.on('user connected', user => {
@@ -190,28 +193,28 @@ var chatAppCtrl = function ($scope, $crypto) {
       $scope.outputUsers(usersList);
       $scope.$apply();
     });
-    $scope.outputUsers = function (usersList) {
-      usersList.forEach(user => {
-        if (user.UNAME !== undefined && user.UNAME) {
-          $('.dropdown-menu').append(
-            `<li>
-            <div class='flex'>
-            <span class="users"></span><p class='paraG'>${user.UNAME}</p>
-            </div>
-            </li>`
-          );
-        } else if (user.username) {
-          $('.dropdown-menu').append(
-            `<li>
-            <div class='flex'>
-            <span class="users"></span><p class='paraG'>${user.username}</p>
-            </div>
-            </li>`
-          );
-        }
-        $scope.$apply();
-      });
-    };
+    // $scope.outputUsers = function (usersList) {
+    //   usersList.forEach(user => {
+    //     if (user.UNAME !== undefined && user.UNAME) {
+    //       $('.dropdown-menu').append(
+    //         `<li>
+    //         <div class='flex'>
+    //         <span class="users"></span><p class='paraG'>${user.UNAME}</p>
+    //         </div>
+    //         </li>`
+    //       );
+    //     } else if (user.username) {
+    //       $('.dropdown-menu').append(
+    //         `<li>
+    //         <div class='flex'>
+    //         <span class="users"></span><p class='paraG'>${user.username}</p>
+    //         </div>
+    //         </li>`
+    //       );
+    //     }
+    //     $scope.$apply();
+    //   });
+    // };
   };
 
   $scope.changeClass();

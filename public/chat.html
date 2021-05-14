@@ -16,7 +16,16 @@
           style="height: 1.5rem; width: 1.5rem"
         />
       </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"></ul>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li ng-repeat="user in users">
+          <div class="flex">
+            <span class="users"></span>
+            <p class="paraG">
+              {{user.UNAME === undefined ? user.username : user.UNAME}}
+            </p>
+          </div>
+        </li>
+      </ul>
     </div>
     <div>
       <div>
