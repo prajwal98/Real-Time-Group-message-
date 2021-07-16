@@ -308,7 +308,7 @@ io.on('connection', socket => {
       message: msg.msg,
       username: user.username,
       room: user.room,
-      time: moment().utcOffset('+05:30').format('LT'),
+      time: moment().utcOffset('+05:30').format('MMMM Do YYYY  LT'),
     });
 
     chatMessage.save(); // save message to database
